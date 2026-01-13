@@ -1,0 +1,1258 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة الدراسة - متابعة شخصية</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --secondary: #7209b7;
+            --success: #4cc9f0;
+            --danger: #f72585;
+            --warning: #f8961e;
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+            --gray-light: #e9ecef;
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --card-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+            --border-radius: 16px;
+            --sidebar-width: 280px;
+        }
+
+        .dark-mode {
+            --dark: #f8f9fa;
+            --light: #1a1a2e;
+            --gray: #adb5bd;
+            --gray-light: #2d3047;
+            --card-bg: rgba(30, 30, 46, 0.9);
+            --card-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--dark);
+            min-height: 100vh;
+            transition: var(--transition);
+            padding: 20px;
+        }
+
+        .dark-mode body {
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Onboarding Styles */
+        .onboarding {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: var(--transition);
+            padding: 20px;
+        }
+
+        .onboarding.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .onboarding-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            padding: 40px;
+            width: 100%;
+            max-width: 500px;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .onboarding-card h1 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .onboarding-card p {
+            color: var(--gray);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid var(--gray-light);
+            border-radius: 12px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 16px;
+            transition: var(--transition);
+            background: var(--light);
+            color: var(--dark);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 14px 28px;
+            background: linear-gradient(to left, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(67, 97, 238, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-block {
+            width: 100%;
+        }
+
+        /* Header Styles */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            animation: fadeIn 0.5s ease;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .profile-pic {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary);
+            transition: var(--transition);
+        }
+
+        .profile-pic:hover {
+            transform: scale(1.05);
+        }
+
+        .user-info h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .user-info p {
+            color: var(--gray);
+            font-size: 14px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .countdown {
+            background: linear-gradient(to left, var(--primary), var(--secondary));
+            color: white;
+            padding: 12px 24px;
+            border-radius: 12px;
+            text-align: center;
+            min-width: 180px;
+            box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+        }
+
+        .countdown h3 {
+            font-size: 14px;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .countdown .days {
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .theme-toggle {
+            width: 50px;
+            height: 26px;
+            background: var(--gray-light);
+            border-radius: 50px;
+            position: relative;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .theme-toggle.active {
+            background: var(--primary);
+        }
+
+        .theme-toggle::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            right: 3px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .theme-toggle.active::after {
+            transform: translateX(-24px);
+        }
+
+        /* Main Content */
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+
+        @media (min-width: 992px) {
+            .dashboard {
+                grid-template-columns: 2fr 1fr;
+            }
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            padding: 30px;
+            margin-bottom: 30px;
+            animation: fadeInUp 0.5s ease;
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+
+        .dark-mode .card:hover {
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--gray-light);
+        }
+
+        .card-title h2 {
+            font-size: 22px;
+            color: var(--primary);
+        }
+
+        /* Progress Section */
+        .progress-section {
+            animation: fadeIn 0.7s ease;
+        }
+
+        .global-progress {
+            margin-bottom: 40px;
+        }
+
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .progress-bar {
+            height: 20px;
+            background: var(--gray-light);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(to left, var(--success), var(--primary));
+            border-radius: 10px;
+            width: 0%;
+            transition: width 1.5s ease-in-out;
+        }
+
+        .motivational-message {
+            background: linear-gradient(to right, rgba(76, 201, 240, 0.1), rgba(67, 97, 238, 0.1));
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin-top: 25px;
+            border-right: 4px solid var(--success);
+            text-align: center;
+            font-weight: 600;
+            color: var(--primary);
+            animation: fadeIn 1s ease;
+        }
+
+        /* Subjects Section */
+        .subject-item {
+            background: var(--light);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-right: 4px solid var(--primary);
+            transition: var(--transition);
+            animation: slideInRight 0.5s ease;
+        }
+
+        .dark-mode .subject-item {
+            background: var(--gray-light);
+        }
+
+        .subject-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .subject-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .subject-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--gray-light);
+            color: var(--dark);
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-icon:hover {
+            background: var(--primary);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .btn-danger {
+            background: rgba(247, 37, 133, 0.1);
+            color: var(--danger);
+        }
+
+        .btn-danger:hover {
+            background: var(--danger);
+            color: white;
+        }
+
+        .lesson-list {
+            margin-top: 15px;
+        }
+
+        .lesson-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            background: var(--card-bg);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            transition: var(--transition);
+        }
+
+        .lesson-item:hover {
+            background: rgba(67, 97, 238, 0.05);
+        }
+
+        .dark-mode .lesson-item:hover {
+            background: rgba(67, 97, 238, 0.1);
+        }
+
+        .lesson-checkbox {
+            width: 22px;
+            height: 22px;
+            margin-left: 15px;
+            cursor: pointer;
+            accent-color: var(--success);
+        }
+
+        .lesson-text {
+            flex-grow: 1;
+            font-size: 16px;
+        }
+
+        .lesson-text.completed {
+            text-decoration: line-through;
+            color: var(--gray);
+        }
+
+        .add-form {
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 1px dashed var(--gray-light);
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .form-row .form-control {
+            flex-grow: 1;
+        }
+
+        .btn-success {
+            background: linear-gradient(to left, var(--success), #38b000);
+            box-shadow: 0 4px 15px rgba(76, 201, 240, 0.3);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .pulse {
+            animation: pulse 1.5s infinite;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-right {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .countdown {
+                min-width: 140px;
+            }
+            
+            .form-row {
+                flex-direction: column;
+            }
+            
+            .subject-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .card {
+                padding: 20px;
+            }
+        }
+
+        /* Utility */
+        .hidden {
+            display: none !important;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mb-3 {
+            margin-bottom: 15px;
+        }
+
+        .mt-3 {
+            margin-top: 15px;
+        }
+
+        /* File upload styling */
+        .file-upload {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-upload-label {
+            display: block;
+            padding: 14px 18px;
+            background: var(--light);
+            border: 2px dashed var(--gray);
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--gray);
+        }
+
+        .file-upload-label:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .file-upload-input {
+            position: absolute;
+            right: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <!-- Onboarding Screen -->
+    <div id="onboarding" class="onboarding">
+        <div class="onboarding-card">
+            <h1>مرحباً في لوحة الدراسة الشخصية!</h1>
+            <p>ساعدنا في إنشاء حسابك الشخصي لمتابعة دراستك</p>
+            <form id="setupForm">
+                <div class="form-group">
+                    <label for="userName">الاسم الكامل</label>
+                    <input type="text" id="userName" class="form-control" placeholder="أدخل اسمك هنا" required>
+                </div>
+                <div class="form-group">
+                    <label for="profilePic">صورة الملف الشخصي (اختياري)</label>
+                    <div class="file-upload">
+                        <label for="profilePicInput" class="file-upload-label">
+                            <i class="fas fa-cloud-upload-alt"></i> اختر صورة
+                        </label>
+                        <input type="file" id="profilePicInput" class="file-upload-input" accept="image/*">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="examDays">كم يوم متبقي حتى الامتحان؟</label>
+                    <input type="number" id="examDays" class="form-control" min="1" max="365" value="30" required>
+                </div>
+                <button type="submit" class="btn btn-block">ابدأ الدراسة!</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div id="dashboard" class="container hidden">
+        <!-- Header -->
+        <header>
+            <div class="header-left">
+                <img id="profileDisplay" class="profile-pic" src="https://ui-avatars.com/api/?name=طالب&background=4361ee&color=fff" alt="Profile">
+                <div class="user-info">
+                    <h1 id="welcomeName">أهلاً، طالب!</h1>
+                    <p>تابع تقدمك الدراسي وحقق أهدافك</p>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="countdown">
+                    <h3>الأيام المتبقية للامتحان</h3>
+                    <div class="days" id="countdownDays">30</div>
+                </div>
+                <div class="theme-toggle" id="themeToggle"></div>
+            </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <div class="dashboard">
+            <!-- Left Column -->
+            <div class="left-column">
+                <!-- Progress Section -->
+                <section class="progress-section card">
+                    <div class="global-progress">
+                        <div class="card-title">
+                            <h2>التقدم العام</h2>
+                            <span id="progressPercentage">0%</span>
+                        </div>
+                        <div class="progress-text">
+                            <span>دروس مكتملة</span>
+                            <span id="completedLessons">0 / 0</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                    </div>
+                    <div id="motivationalMessage" class="motivational-message hidden">
+                        أحسنت! استمر في التقدم
+                    </div>
+                </section>
+
+                <!-- Subjects Section -->
+                <section class="subjects-section card">
+                    <div class="card-title">
+                        <h2>المواد الدراسية</h2>
+                        <button class="btn" id="addSubjectBtn">إضافة مادة</button>
+                    </div>
+                    <div id="subjectsContainer">
+                        <!-- Subjects will be dynamically added here -->
+                        <div class="text-center" id="noSubjectsMessage">
+                            <p>لا توجد مواد دراسية بعد. أضف مادة لتبدأ!</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Right Column -->
+            <div class="right-column">
+                <!-- Add New Subject/Lesson -->
+                <section class="add-section card">
+                    <div class="card-title">
+                        <h2>إضافة جديد</h2>
+                        <i class="fas fa-plus-circle" style="color: var(--primary); font-size: 24px;"></i>
+                    </div>
+                    <div class="add-form">
+                        <div class="form-group">
+                            <label for="newSubjectName">اسم المادة الجديدة</label>
+                            <input type="text" id="newSubjectName" class="form-control" placeholder="مثال: الرياضيات">
+                        </div>
+                        <div class="form-group">
+                            <label for="newLesson">درس جديد</label>
+                            <div class="form-row">
+                                <select id="subjectSelect" class="form-control">
+                                    <option value="">اختر المادة</option>
+                                </select>
+                                <input type="text" id="newLesson" class="form-control" placeholder="عنوان الدرس">
+                            </div>
+                        </div>
+                        <button class="btn btn-success btn-block" id="addLessonBtn">إضافة الدرس</button>
+                    </div>
+                </section>
+
+                <!-- Quick Stats -->
+                <section class="stats-section card">
+                    <div class="card-title">
+                        <h2>إحصائيات سريعة</h2>
+                        <i class="fas fa-chart-line" style="color: var(--success); font-size: 24px;"></i>
+                    </div>
+                    <div class="stats">
+                        <div class="stat-item">
+                            <h3>المواد المضافة</h3>
+                            <p id="totalSubjects">0</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3>الدروس الكلية</h3>
+                            <p id="totalLessons">0</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3>الدروس المكتملة</h3>
+                            <p id="completedLessonsCount">0</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // App state
+        const state = {
+            user: null,
+            subjects: [],
+            examDate: null,
+            darkMode: false
+        };
+
+        // DOM Elements
+        const onboardingEl = document.getElementById('onboarding');
+        const dashboardEl = document.getElementById('dashboard');
+        const setupForm = document.getElementById('setupForm');
+        const themeToggle = document.getElementById('themeToggle');
+        const profileDisplay = document.getElementById('profileDisplay');
+        const welcomeName = document.getElementById('welcomeName');
+        const countdownDays = document.getElementById('countdownDays');
+        const subjectsContainer = document.getElementById('subjectsContainer');
+        const noSubjectsMessage = document.getElementById('noSubjectsMessage');
+        const progressPercentage = document.getElementById('progressPercentage');
+        const progressFill = document.getElementById('progressFill');
+        const completedLessons = document.getElementById('completedLessons');
+        const motivationalMessage = document.getElementById('motivationalMessage');
+        const addSubjectBtn = document.getElementById('addSubjectBtn');
+        const addLessonBtn = document.getElementById('addLessonBtn');
+        const newSubjectName = document.getElementById('newSubjectName');
+        const subjectSelect = document.getElementById('subjectSelect');
+        const newLesson = document.getElementById('newLesson');
+        const totalSubjects = document.getElementById('totalSubjects');
+        const totalLessons = document.getElementById('totalLessons');
+        const completedLessonsCount = document.getElementById('completedLessonsCount');
+        const profilePicInput = document.getElementById('profilePicInput');
+
+        // Motivational messages in Moroccan Arabic
+        const motivationalMessages = [
+            "مزيان! كمل هكذا!",
+            "واو! أنت نجم!",
+            "ربي يوفقك!",
+            "ما تخليش، أنت قادر!",
+            "هيا، بقى شوية!",
+            "ماشي حلو! كمل التفوق!",
+            "متابعة رائعة!",
+            "إلى الأمام دايماً!"
+        ];
+
+        // Initialize the app
+        function init() {
+            loadState();
+            setupEventListeners();
+            
+            if (!state.user) {
+                showOnboarding();
+            } else {
+                showDashboard();
+                updateDashboard();
+            }
+            
+            updateTheme();
+        }
+
+        // Load state from localStorage
+        function loadState() {
+            const savedUser = localStorage.getItem('studyDashboardUser');
+            const savedSubjects = localStorage.getItem('studyDashboardSubjects');
+            const savedExamDate = localStorage.getItem('studyDashboardExamDate');
+            const savedDarkMode = localStorage.getItem('studyDashboardDarkMode');
+            
+            if (savedUser) {
+                state.user = JSON.parse(savedUser);
+            }
+            
+            if (savedSubjects) {
+                state.subjects = JSON.parse(savedSubjects);
+            }
+            
+            if (savedExamDate) {
+                state.examDate = new Date(savedExamDate);
+            }
+            
+            if (savedDarkMode) {
+                state.darkMode = savedDarkMode === 'true';
+                document.body.classList.toggle('dark-mode', state.darkMode);
+                themeToggle.classList.toggle('active', state.darkMode);
+            }
+        }
+
+        // Save state to localStorage
+        function saveState() {
+            localStorage.setItem('studyDashboardUser', JSON.stringify(state.user));
+            localStorage.setItem('studyDashboardSubjects', JSON.stringify(state.subjects));
+            if (state.examDate) {
+                localStorage.setItem('studyDashboardExamDate', state.examDate.toISOString());
+            }
+            localStorage.setItem('studyDashboardDarkMode', state.darkMode.toString());
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Onboarding form
+            setupForm.addEventListener('submit', handleSetupSubmit);
+            
+            // Theme toggle
+            themeToggle.addEventListener('click', toggleTheme);
+            
+            // Add subject button
+            addSubjectBtn.addEventListener('click', handleAddSubject);
+            
+            // Add lesson button
+            addLessonBtn.addEventListener('click', handleAddLesson);
+            
+            // Profile picture upload
+            profilePicInput.addEventListener('change', handleProfilePicUpload);
+            
+            // Enter key in subject name field
+            newSubjectName.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    handleAddSubject();
+                }
+            });
+            
+            // Enter key in lesson field
+            newLesson.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    handleAddLesson();
+                }
+            });
+        }
+
+        // Handle setup form submission
+        function handleSetupSubmit(e) {
+            e.preventDefault();
+            
+            const userName = document.getElementById('userName').value;
+            const examDays = parseInt(document.getElementById('examDays').value);
+            
+            // Set user data
+            state.user = {
+                name: userName,
+                profilePic: profileDisplay.src
+            };
+            
+            // Calculate exam date
+            const today = new Date();
+            state.examDate = new Date(today);
+            state.examDate.setDate(today.getDate() + examDays);
+            
+            saveState();
+            showDashboard();
+            updateDashboard();
+            
+            // Show welcome message
+            showMotivationalMessage(`أهلاً وسهلاً ${userName}! هيا نبدأ الدراسة`, 5000);
+        }
+
+        // Handle profile picture upload
+        function handleProfilePicUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                profileDisplay.src = event.target.result;
+                if (state.user) {
+                    state.user.profilePic = event.target.result;
+                    saveState();
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Handle adding a new subject
+        function handleAddSubject() {
+            const subjectName = newSubjectName.value.trim();
+            
+            if (!subjectName) {
+                showMotivationalMessage("الرجاء إدخال اسم المادة", 3000);
+                newSubjectName.focus();
+                return;
+            }
+            
+            // Check if subject already exists
+            if (state.subjects.some(subject => subject.name === subjectName)) {
+                showMotivationalMessage("هذه المادة موجودة بالفعل", 3000);
+                return;
+            }
+            
+            // Add new subject
+            const newSubject = {
+                id: Date.now().toString(),
+                name: subjectName,
+                lessons: [],
+                color: getRandomColor()
+            };
+            
+            state.subjects.push(newSubject);
+            saveState();
+            updateDashboard();
+            
+            // Clear input and focus
+            newSubjectName.value = '';
+            newSubjectName.focus();
+            
+            // Show success message
+            showMotivationalMessage(`تمت إضافة مادة "${subjectName}"`, 3000);
+        }
+
+        // Handle adding a new lesson
+        function handleAddLesson() {
+            const subjectId = subjectSelect.value;
+            const lessonName = newLesson.value.trim();
+            
+            if (!subjectId || !lessonName) {
+                showMotivationalMessage("الرجاء اختيار المادة وإدخال اسم الدرس", 3000);
+                return;
+            }
+            
+            // Find the subject
+            const subjectIndex = state.subjects.findIndex(subject => subject.id === subjectId);
+            if (subjectIndex === -1) return;
+            
+            // Add new lesson
+            const newLessonObj = {
+                id: Date.now().toString(),
+                name: lessonName,
+                completed: false
+            };
+            
+            state.subjects[subjectIndex].lessons.push(newLessonObj);
+            saveState();
+            updateDashboard();
+            
+            // Clear input
+            newLesson.value = '';
+            newLesson.focus();
+            
+            // Show success message
+            const subjectName = state.subjects[subjectIndex].name;
+            showMotivationalMessage(`تمت إضافة درس "${lessonName}" إلى "${subjectName}"`, 3000);
+        }
+
+        // Toggle lesson completion
+        function toggleLessonCompletion(subjectId, lessonId) {
+            const subject = state.subjects.find(s => s.id === subjectId);
+            if (!subject) return;
+            
+            const lesson = subject.lessons.find(l => l.id === lessonId);
+            if (!lesson) return;
+            
+            // Store old completion state for motivational message
+            const wasCompleted = lesson.completed;
+            
+            // Toggle completion
+            lesson.completed = !lesson.completed;
+            
+            // Get lesson name for message
+            const lessonName = lesson.name;
+            const subjectName = subject.name;
+            
+            saveState();
+            updateDashboard();
+            
+            // Show motivational message if lesson was just completed
+            if (!wasCompleted && lesson.completed) {
+                const randomMessage = motivationalMessages[Math.floor(Math.random() * motivationalMessages.length)];
+                showMotivationalMessage(`${randomMessage} أكملت درس "${lessonName}" في "${subjectName}"`, 4000);
+            }
+        }
+
+        // Delete a subject
+        function deleteSubject(subjectId) {
+            if (!confirm("هل أنت متأكد من حذف هذه المادة؟ سيتم حذف جميع الدروس أيضًا.")) {
+                return;
+            }
+            
+            state.subjects = state.subjects.filter(subject => subject.id !== subjectId);
+            saveState();
+            updateDashboard();
+            
+            showMotivationalMessage("تم حذف المادة", 3000);
+        }
+
+        // Delete a lesson
+        function deleteLesson(subjectId, lessonId) {
+            if (!confirm("هل أنت متأكد من حذف هذا الدرس؟")) {
+                return;
+            }
+            
+            const subject = state.subjects.find(s => s.id === subjectId);
+            if (!subject) return;
+            
+            subject.lessons = subject.lessons.filter(lesson => lesson.id !== lessonId);
+            saveState();
+            updateDashboard();
+            
+            showMotivationalMessage("تم حذف الدرس", 3000);
+        }
+
+        // Toggle dark/light theme
+        function toggleTheme() {
+            state.darkMode = !state.darkMode;
+            document.body.classList.toggle('dark-mode', state.darkMode);
+            themeToggle.classList.toggle('active', state.darkMode);
+            saveState();
+        }
+
+        // Update theme based on state
+        function updateTheme() {
+            document.body.classList.toggle('dark-mode', state.darkMode);
+            themeToggle.classList.toggle('active', state.darkMode);
+        }
+
+        // Show onboarding screen
+        function showOnboarding() {
+            onboardingEl.classList.remove('hidden');
+            dashboardEl.classList.add('hidden');
+        }
+
+        // Show dashboard
+        function showDashboard() {
+            onboardingEl.classList.add('hidden');
+            dashboardEl.classList.remove('hidden');
+        }
+
+        // Update dashboard with current data
+        function updateDashboard() {
+            if (!state.user) return;
+            
+            // Update user info
+            welcomeName.textContent = `أهلاً، ${state.user.name}`;
+            profileDisplay.src = state.user.profilePic || profileDisplay.src;
+            
+            // Update countdown
+            updateCountdown();
+            
+            // Update subjects and lessons
+            renderSubjects();
+            
+            // Update progress
+            updateProgress();
+            
+            // Update stats
+            updateStats();
+            
+            // Update subject select dropdown
+            updateSubjectSelect();
+        }
+
+        // Update countdown timer
+        function updateCountdown() {
+            if (!state.examDate) return;
+            
+            const today = new Date();
+            const timeDiff = state.examDate.getTime() - today.getTime();
+            const daysRemaining = Math.ceil(timeDiff / (1000 * 3600 * 24));
+            
+            countdownDays.textContent = daysRemaining > 0 ? daysRemaining : 0;
+            
+            // Update countdown daily
+            setTimeout(updateCountdown, 1000 * 60 * 60 * 24); // Check again in 24 hours
+        }
+
+        // Render subjects and lessons
+        function renderSubjects() {
+            // Clear container
+            subjectsContainer.innerHTML = '';
+            
+            if (state.subjects.length === 0) {
+                subjectsContainer.appendChild(noSubjectsMessage);
+                noSubjectsMessage.classList.remove('hidden');
+                return;
+            }
+            
+            noSubjectsMessage.classList.add('hidden');
+            
+            // Render each subject
+            state.subjects.forEach(subject => {
+                const subjectEl = document.createElement('div');
+                subjectEl.className = 'subject-item';
+                subjectEl.style.borderRightColor = subject.color;
+                
+                // Calculate subject progress
+                const totalLessons = subject.lessons.length;
+                const completedLessons = subject.lessons.filter(lesson => lesson.completed).length;
+                const progressPercent = totalLessons > 0 ? Math.round((completedLessons / totalLessons) * 100) : 0;
+                
+                subjectEl.innerHTML = `
+                    <div class="subject-header">
+                        <div>
+                            <h3 class="subject-name">${subject.name}</h3>
+                            <p>${completedLessons}/${totalLessons} دروس مكتملة (${progressPercent}%)</p>
+                        </div>
+                        <div class="subject-actions">
+                            <button class="btn-icon btn-danger" data-subject-id="${subject.id}" data-action="delete-subject">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="lesson-list" id="lessons-${subject.id}">
+                        ${subject.lessons.length > 0 ? 
+                            subject.lessons.map(lesson => `
+                                <div class="lesson-item">
+                                    <input type="checkbox" class="lesson-checkbox" id="lesson-${lesson.id}" ${lesson.completed ? 'checked' : ''}>
+                                    <label class="lesson-text ${lesson.completed ? 'completed' : ''}" for="lesson-${lesson.id}">${lesson.name}</label>
+                                    <button class="btn-icon btn-danger" data-subject-id="${subject.id}" data-lesson-id="${lesson.id}" data-action="delete-lesson">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            `).join('') : 
+                            '<p class="text-center" style="color: var(--gray);">لا توجد دروس بعد. أضف درساً جديداً.</p>'
+                        }
+                    </div>
+                `;
+                
+                subjectsContainer.appendChild(subjectEl);
+            });
+            
+            // Add event listeners for checkboxes and delete buttons
+            document.querySelectorAll('.lesson-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const lessonId = this.id.replace('lesson-', '');
+                    const subjectItem = this.closest('.subject-item');
+                    const subjectId = subjectItem.querySelector('[data-subject-id]').dataset.subjectId;
+                    toggleLessonCompletion(subjectId, lessonId);
+                });
+            });
+            
+            document.querySelectorAll('[data-action="delete-subject"]').forEach(button => {
+                button.addEventListener('click', function() {
+                    const subjectId = this.dataset.subjectId;
+                    deleteSubject(subjectId);
+                });
+            });
+            
+            document.querySelectorAll('[data-action="delete-lesson"]').forEach(button => {
+                button.addEventListener('click', function() {
+                    const subjectId = this.dataset.subjectId;
+                    const lessonId = this.dataset.lessonId;
+                    deleteLesson(subjectId, lessonId);
+                });
+            });
+        }
+
+        // Update progress display
+        function updateProgress() {
+            // Calculate global progress
+            let totalLessonsCount = 0;
+            let completedLessonsCount = 0;
+            
+            state.subjects.forEach(subject => {
+                totalLessonsCount += subject.lessons.length;
+                completedLessonsCount += subject.lessons.filter(lesson => lesson.completed).length;
+            });
+            
+            const progressPercent = totalLessonsCount > 0 ? 
+                Math.round((completedLessonsCount / totalLessonsCount) * 100) : 0;
+            
+            // Update progress bar
+            progressPercentage.textContent = `${progressPercent}%`;
+            progressFill.style.width = `${progressPercent}%`;
+            completedLessons.textContent = `${completedLessonsCount} / ${totalLessonsCount}`;
+            
+            // Update progress bar color based on progress
+            if (progressPercent < 30) {
+                progressFill.style.background = 'linear-gradient(to left, #f72585, #ff006e)';
+            } else if (progressPercent < 70) {
+                progressFill.style.background = 'linear-gradient(to left, #f8961e, #ff9e00)';
+            } else {
+                progressFill.style.background = 'linear-gradient(to left, #4cc9f0, #4361ee)';
+            }
+        }
+
+        // Update statistics
+        function updateStats() {
+            // Calculate stats
+            const subjectsCount = state.subjects.length;
+            let lessonsCount = 0;
+            let completedCount = 0;
+            
+            state.subjects.forEach(subject => {
+                lessonsCount += subject.lessons.length;
+                completedCount += subject.lessons.filter(lesson => lesson.completed).length;
+            });
+            
+            // Update stats display
+            totalSubjects.textContent = subjectsCount;
+            totalLessons.textContent = lessonsCount;
+            completedLessonsCount.textContent = completedCount;
+        }
+
+        // Update subject select dropdown
+        function updateSubjectSelect() {
+            subjectSelect.innerHTML = '<option value="">اختر المادة</option>';
+            
+            state.subjects.forEach(subject => {
+                const option = document.createElement('option');
+                option.value = subject.id;
+                option.textContent = subject.name;
+                subjectSelect.appendChild(option);
+            });
+        }
+
+        // Show motivational message
+        function showMotivationalMessage(message, duration = 5000) {
+            motivationalMessage.textContent = message;
+            motivationalMessage.classList.remove('hidden');
+            motivationalMessage.classList.add('pulse');
+            
+            // Hide after duration
+            setTimeout(() => {
+                motivationalMessage.classList.add('hidden');
+                motivationalMessage.classList.remove('pulse');
+            }, duration);
+        }
+
+        // Generate random color for subjects
+        function getRandomColor() {
+            const colors = [
+                '#4361ee', '#7209b7', '#f72585', 
+                '#4cc9f0', '#38b000', '#f8961e',
+                '#3a0ca3', '#2ec4b6', '#e71d36'
+            ];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+
+        // Initialize the app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
